@@ -1,0 +1,25 @@
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.neural_network import MLPClassifier, MLPRegressor
+from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
+from sklearn import datasets, svm, metrics
+from sklearn.preprocessing import PolynomialFeatures, StandardScaler
+from sklearn.model_selection import train_test_split
+np.random.seed(42)
+
+# Preprocessing of data
+brc = datasets.load_breast_cancer()
+samples, features = brc.data.shape
+X = np.hstack((brc.data, np.ones(samples).reshape(-1,1)))
+target = brc.target.reshape(-1,1)
+
+clf = RandomForestClassifier(max_depth=10, random_state=0)
+
+X_train, X_test, y_train, y_test = train_test_split(X, target)
+clf.fit(X_train, y_train)
+y_pred = clf.predict(X_test)
+print(
+    f"Classification report for classifier {clf}:\n"
+    f"{metrics.classification_report(y_test, y_pred)}\n"
+)
